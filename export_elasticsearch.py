@@ -8,14 +8,17 @@ es = Elasticsearch(['localhost:9200'])
 Mapping = mappingJson(es)
 
 print("----- Préparation ElasticSearch pour la réception des données ------")
-print("vidage index:", 'tp3', '>', 'stationsBixi', Mapping.emptyIndexType('tp3', 'stationsBixi'))
-print("vidage index:", 'tp3', '>', 'stationsCommunauto', Mapping.emptyIndexType('tp3', 'stationsCommunauto'))
-print("indexage mapping", 'tp3', '>', 'stationsBixi', Mapping.indexMapping('tp3', 'stationsBixi'))
-print("indexage mapping", 'tp3', '>', 'stationsCommunauto', Mapping.indexMapping('tp3', 'stationsCommunauto'))
+print("vidage index:", 'defivelomtl', '>', 'bixi_stations', Mapping.emptyIndexType('defivelomtl', 'bixi_stations'))
+print("indexage mapping", 'defivelomtl', '>', 'bixi_stations', Mapping.indexMapping('defivelomtl', 'bixi_stations'))
+print("vidage index:", 'defivelomtl', '>', 'bixi_OD', Mapping.emptyIndexType('defivelomtl', 'bixi_OD'))
+print("indexage mapping", 'defivelomtl', '>', 'bixi_OD', Mapping.indexMapping('defivelomtl', 'bixi_OD'))
+print("vidage index:", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.emptyIndexType('defivelomtl', 'arceaux_a_velos'))
+print("indexage mapping", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.indexMapping('defivelomtl', 'arceaux_a_velos'))
 # Mapping.resetAllMapping()
 # exit()
 
 print("----- Lecture des TapIn et envoi à ElasticSearch ------")
+
 
 def batchToElasticSearch(ligne, labels, batch, counts, es, index, docType, forceSave):
     ''' On veut envoyer les voyages à ES, mais toujours par lot de 10 000 '''
@@ -55,16 +58,18 @@ def exportFileToES(index, docType, fileName, date):
 
     countAddedDocs = 0
     i = -1
-    for line in open(fileName):
+    for line in open(fileName, encoding="utf8"):
         ligne = line.replace("\n", "").split(";")
         # name;lon;lat;coordsLatLon;capacity;region
         if i < 0:
             labels = ligne
-            labels.append('date')
+            if date:
+                labels.append('date')
             i += 1
             continue
-        ligne.append(date)
-        toolbox.progressBar(i, 325)
+        if date:
+            ligne.append(date)
+        toolbox.progressBar(i, 150000)
 
         if i >= 10000000:
             break  # On veut que 500 tapIn mais ... on ne veut pas couper les tap in d'une carte !
@@ -78,5 +83,9 @@ def exportFileToES(index, docType, fileName, date):
     toolbox.hideProgressBar()
     print(counts["countAddedDocs"], "/", i+1, "transactions envoyées à ElasticSearch en", toolbox.tempsCalulString(tStart), "pour fileName")
 
-exportFileToES("tp3", "stationsBixi", "input/dataStationsBixi 2014 reg2.csv", "2014-01-01")
-exportFileToES("tp3", "stationsCommunauto", "input/dataStationsCommunauto 2010 reg2.csv", "2010-01-01")
+print("export defivelomtl > bixi_stations")
+exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")
+print("export defivelomtl > bixi_OD")
+exportFileToES("defivelomtl", "bixi_OD", "input/BIXI_avril 2015_demo.csv", False)
+print("export defivelomtl > arceaux_a_velos")
+exportFileToES("defivelomtl", "arceaux_a_velos", "input/arceaux_a_velos.csv", "2013-10-17")
