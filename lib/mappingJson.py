@@ -49,7 +49,6 @@ class mappingJson:
                 "terminalName": e.int,
                 "lat": e.strNa,
                 "long": e.strNa,
-                "coordsLngLat": e.location,
                 "installed": e.int,
                 "locked": e.int,
                 "temporary": e.int,
@@ -60,12 +59,13 @@ class mappingJson:
                 "date": e.date
             }},
             "bixi_OD": {"_all": e._all, "properties": {
-                "date": e.timestampFr,
-                "Start date": e.timestampFr,
+                "date": e.timestamp,
+                "hour": e.int,
+                "Start date": e.timestamp,
                 "Start station number": e.int,
                 "Start station": e.strNa,
                 "Start Coords LngLat": e.location,
-                "End date": e.timestampFr,
+                "End date": e.timestamp,
                 "End station number": e.int,
                 "End station": e.strNa,
                 "End Coords LngLat": e.location,
@@ -73,7 +73,7 @@ class mappingJson:
                 "Member's gender": e.strNa,
                 "Total duration": e.strNa,
                 "Member's language": e.strNa,
-                "min": e.int
+                "tempsTrajet": e.int
             }},
             "arceaux_a_velos": {"_all": e._all, "properties": {
                 "INV_ID": e.strNa,

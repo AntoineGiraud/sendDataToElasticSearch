@@ -32,6 +32,7 @@ def batchToElasticSearch(ligne, labels, batch, counts, es, index, docType, force
         ligneJson[l] = parsedValue
         j += 1
     # print(ligneJson)
+
     batch.extend([batchIndex, ligneJson])
 
     if counts["i"] % step == 0 and counts["i"] > 0:
@@ -58,6 +59,7 @@ def exportFileToES(index, docType, fileName, date):
 
     countAddedDocs = 0
     i = -1
+
     for line in open(fileName, encoding="utf8"):
         ligne = line.replace("\n", "").split(";")
         # name;lon;lat;coordsLatLon;capacity;region
@@ -65,13 +67,42 @@ def exportFileToES(index, docType, fileName, date):
             labels = ligne
             if date:
                 labels.append('date')
+            else:
+                if docType == "bixi_OD":
+                    labels.append('date')
+                    labels.append('hour')
+                    labels.append('tempsTrajet')
+                    labels.append('Start Coords LngLat')
+                    labels.append('End Coords LngLat')
             i += 1
             continue
         if date:
             ligne.append(date)
+        else:
+            if docType == "bixi_OD":
+                # 0:StartDate, 1:StartStationNumber, 2:StartStation, 3:EndDate, 4:EndStationNumber, 5:EndStation, 6:AccountType, 7:MemberGender, 8:TotalDuration, 9:MemberLanguage
+                ligne.append(ligne[0])
+                ligne.append(ligne[0][-5:-3])
+                tempsTrajet = ligne[8].split("m")
+                tempsTrajet = tempsTrajet[0].split("h")
+                if len(tempsTrajet) == 2:
+                    tempsTrajet = int(tempsTrajet[0])*60 + int(tempsTrajet[1])
+                else:
+                    tempsTrajet = int(tempsTrajet[0])
+                ligne.append(tempsTrajet)
+                try:
+                    ligne.append(bixi_stops[ligne[1]])
+                except Exception:
+                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[1], "inexistante")
+                    continue
+                try:
+                    ligne.append(bixi_stops[ligne[4]])
+                except Exception:
+                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[4], "inexistante")
+                    continue
         toolbox.progressBar(i, 150000)
 
-        if i >= 10000000:
+        if i >= 200000:
             break  # On veut que 500 tapIn mais ... on ne veut pas couper les tap in d'une carte !
 
         batchToElasticSearch(ligne, labels, batch, counts, es, index, docType, False)
@@ -83,8 +114,20 @@ def exportFileToES(index, docType, fileName, date):
     toolbox.hideProgressBar()
     print(counts["countAddedDocs"], "/", i+1, "transactions envoyées à ElasticSearch en", toolbox.tempsCalulString(tStart), "pour", fileName)
 
+bixi_stops = {}
+i = -1
+for line in open("input/BIXI_Stations_20151126.csv", encoding="utf8"):
+    if i < 0:
+        i += 1
+        print("skip !")
+        continue
+    ligne = line.replace("\n", "").split(";")
+    # terminalName;id;name;lat;long;coordsLngLat;installed;locked;temporary;public;nbBikes;nbEmptyDocks
+    bixi_stops[ligne[0]] = ligne[5]
+
 print("export defivelomtl > bixi_stations")
 exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")
+
 print("export defivelomtl > bixi_OD")
 exportFileToES("defivelomtl", "bixi_OD", "input/BIXI_avril 2015_demo.csv", False)
 print("export defivelomtl > arceaux_a_velos")
