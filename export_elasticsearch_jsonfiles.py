@@ -64,7 +64,10 @@ def exportFileToES(index, docType, fileName, date):
         if date:
             feature.date = date
         else:
-            feature["properties"]["date"] = feature["properties"]["start"]
+            feature["date"] = feature["properties"]["start"]
+            feature["hour"] = int(feature["date"][-8:-6])
+            # print(feature["date"][-8:-3])
+            # break
 
         toolbox.progressBar(i, 150000)
 

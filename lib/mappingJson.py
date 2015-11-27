@@ -108,13 +108,14 @@ class mappingJson:
             }},
             "mrvtripsnapliv03": {"_all": e._all, "properties": {
                 "type": e.strNa,
+                "date": e.timestampWithSeconds,
+                "hour": e.int,
                 "properties": {
                     "type": "object",
                     "properties": {
                       "id": e.int,
                       "purpose": e.strNa,
                       "notes": e.strNa,
-                      "date": e.timestampWithSeconds,
                       "start": e.timestampWithSeconds,
                       "stop": e.timestampWithSeconds,
                       "length": e.int,
@@ -131,13 +132,14 @@ class mappingJson:
             }},
             "mrvtripcleanliv03": {"_all": e._all, "properties": {
                 "type": e.strNa,
+                "date": e.timestampWithSeconds,
+                "hour": e.int,
                 "properties": {
                     "type": "object",
                     "properties": {
                         "id": e.int,
                         "purpose": e.strNa,
                         "notes": e.strNa,
-                        "date": e.timestampWithSeconds,
                         "start": e.timestampWithSeconds,
                         "stop": e.timestampWithSeconds,
                         "length": e.int,
