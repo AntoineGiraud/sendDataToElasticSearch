@@ -61,6 +61,7 @@ class mappingJson:
             "bixi_OD": {"_all": e._all, "properties": {
                 "date": e.timestamp,
                 "hour": e.int,
+                "OD_stationsIds": e.strNa,
                 "Start date": e.timestamp,
                 "Start station number": e.int,
                 "Start station": e.strNa,

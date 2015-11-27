@@ -69,6 +69,7 @@ def exportFileToES(index, docType, fileName, date):
                 labels.append('date')
             else:
                 if docType == "bixi_OD":
+                    labels.append('OD_stationsIds')
                     labels.append('date')
                     labels.append('hour')
                     labels.append('tempsTrajet')
@@ -81,6 +82,7 @@ def exportFileToES(index, docType, fileName, date):
         else:
             if docType == "bixi_OD":
                 # 0:StartDate, 1:StartStationNumber, 2:StartStation, 3:EndDate, 4:EndStationNumber, 5:EndStation, 6:AccountType, 7:MemberGender, 8:TotalDuration, 9:MemberLanguage
+                ligne.append(ligne[1]+"-"+ligne[4])
                 ligne.append(ligne[0])
                 ligne.append(ligne[0][-5:-3])
                 tempsTrajet = ligne[8].split("m")
