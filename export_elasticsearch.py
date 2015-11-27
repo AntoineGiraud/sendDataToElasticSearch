@@ -81,7 +81,7 @@ def exportFileToES(index, docType, fileName, date):
         batchToElasticSearch(ligne, labels, batch, counts, es, index, docType, True)
 
     toolbox.hideProgressBar()
-    print(counts["countAddedDocs"], "/", i+1, "transactions envoyées à ElasticSearch en", toolbox.tempsCalulString(tStart), "pour fileName")
+    print(counts["countAddedDocs"], "/", i+1, "transactions envoyées à ElasticSearch en", toolbox.tempsCalulString(tStart), "pour", fileName)
 
 print("export defivelomtl > bixi_stations")
 exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")

@@ -17,6 +17,7 @@ class mappingJson:
         int = {"type": "integer", "doc_values": True}
         intEager = {"type": "integer", "doc_values": True, "fielddata": {"loading": "eager"}}
         timestamp = {"type": "date", "doc_values": True, "format": "YYYY-MM-dd HH:mm"}
+        timestampWithSeconds = {"type": "date", "doc_values": True, "format": "YYYY-MM-dd HH:mm:ss"}
         timestampFr = {"type": "date", "doc_values": True, "format": "dd/MM/YYYY HH:mm"}
         date = {"type": "date", "doc_values": True, "format": "YYYY-MM-dd"}
         hourMin = {"type": "date", "doc_values": True, "format": "HH:mm"}
@@ -104,6 +105,53 @@ class mappingJson:
                 "LAT": e.strNa,
                 "coordsLngLat": e.location,
                 "date": e.date
+            }},
+            "mrvtripsnapliv03": {"_all": e._all, "properties": {
+                "type": e.strNa,
+                "properties": {
+                    "type": "object",
+                    "properties": {
+                      "id": e.int,
+                      "purpose": e.strNa,
+                      "notes": e.strNa,
+                      "date": e.timestampWithSeconds,
+                      "start": e.timestampWithSeconds,
+                      "stop": e.timestampWithSeconds,
+                      "length": e.int,
+                      "id_origine": e.int
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "properties": {
+                      "type": e.strNa,
+                      "coordinates": e.location
+                    }
+                }
+            }},
+            "mrvtripcleanliv03": {"_all": e._all, "properties": {
+                "type": e.strNa,
+                "properties": {
+                    "type": "object",
+                    "properties": {
+                        "id": e.int,
+                        "purpose": e.strNa,
+                        "notes": e.strNa,
+                        "date": e.timestampWithSeconds,
+                        "start": e.timestampWithSeconds,
+                        "stop": e.timestampWithSeconds,
+                        "length": e.int,
+                        "liste_segments": e.strNa,
+                        "id_origine": e.int
+                    }
+                },
+                "geometry": {
+                    "type": "object",
+                    "properties": {
+                        "type": e.strNa,
+                        "coordinates": e.location
+                    }
+                }
             }}
         }
     }
