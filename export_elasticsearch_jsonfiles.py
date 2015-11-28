@@ -8,15 +8,13 @@ es = Elasticsearch(['localhost:9200'])
 Mapping = mappingJson(es)
 
 print("----- Préparation ElasticSearch pour la réception des données ------")
-print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo',
-      Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
-print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo',
-      Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
-print("vidage index:", 'defivelomtl', '>', 'mrvtripcleanliv03',
-      Mapping.emptyIndexType('defivelomtl', 'mrvtripcleanliv03'))
+# print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
+# print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
+print("vidage index:", 'defivelomtl', '>', 'charges_bixi', Mapping.emptyIndexType('defivelomtl', 'charges_bixi'))
+print("indexage mapping", 'defivelomtl', '>', 'charges_bixi', Mapping.indexMapping('defivelomtl', 'charges_bixi'))
+# print("vidage index:", 'defivelomtl', '>', 'mrvtripcleanliv03', Mapping.emptyIndexType('defivelomtl', 'mrvtripcleanliv03'))
 # print("indexage mapping", 'defivelomtl', '>', 'mrvtripcleanliv03', Mapping.indexMapping('defivelomtl', 'mrvtripcleanliv03'))
-print("vidage index:", 'defivelomtl', '>', 'mrvtripsnapliv03',
-      Mapping.emptyIndexType('defivelomtl', 'mrvtripsnapliv03'))
+# print("vidage index:", 'defivelomtl', '>', 'mrvtripsnapliv03', Mapping.emptyIndexType('defivelomtl', 'mrvtripsnapliv03'))
 # print("indexage mapping", 'defivelomtl', '>', 'mrvtripsnapliv03', Mapping.indexMapping('defivelomtl', 'mrvtripsnapliv03'))
 # Mapping.resetAllMapping()
 # exit()
@@ -26,7 +24,7 @@ print("----- Lecture des TapIn et envoi à ElasticSearch ------")
 
 def batchToElasticSearch(feature, batch, counts, es, index, docType, forceSave):
     ''' On veut envoyer les voyages à ES, mais toujours par lot de 10 000 '''
-    step = 100
+    step = 10000
     batchIndex = {"index": {}}
 
     batch.extend([batchIndex, feature])
@@ -64,7 +62,7 @@ def exportFileToES(index, docType, fileName, date):
 
     for feature in data['features']:
         if date:
-            feature.date = date
+            feature["date"] = date
         else:
             feature["date"] = feature["properties"]["start"]
             try:
@@ -88,12 +86,16 @@ def exportFileToES(index, docType, fileName, date):
             }
             feature['properties']['purpose'] = english2French.get(feature['properties']['purpose'], feature['properties']['purpose'])
 
-            feature["date"]
+            if len(feature["geometry"]["coordinates"]) >= 2:
+                feature['properties']["startPoint"] = feature["geometry"]["coordinates"][0]
+                feature['properties']["endPoint"] = feature["geometry"]["coordinates"][-1]
+            else:
+                print("Oh, baa ya qu'un point ou pas du tout")
 
             # print(feature["date"][-8:-3])
             # break
 
-        toolbox.progressBar(i, 5000)
+        toolbox.progressBar(i, 15800)
 
         if i >= 100000:
             # On veut que 500 tapIn mais ... on ne veut pas couper les tap in
@@ -110,9 +112,8 @@ def exportFileToES(index, docType, fileName, date):
     print(counts["countAddedDocs"], "/", i + 1, "transactions envoyées à ElasticSearch en",
           toolbox.tempsCalulString(tStart), "pour", fileName)
 
-print("export defivelomtl > trip5000-enriched.json")
-exportFileToES(
-    "defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
+# print("export defivelomtl > trip5000-enriched.json")
+# exportFileToES("defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
 
-# print("export defivelomtl > mrvtripsnapliv03")
-# exportFileToES("defivelomtl", "mrvtripsnapliv03", "input/mrvtripsnapliv03.json", False)
+print("export defivelomtl > charges_bixi")
+exportFileToES("defivelomtl", "charges_bixi", "input/charges_bixi.json", "2015-11-28")
