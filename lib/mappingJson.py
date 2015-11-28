@@ -139,13 +139,26 @@ class mappingJson:
                     "type": "object",
                     "properties": {
                         "id": e.int,
+                        "id_origine": e.int,
+                        "n_coord": e.int,
                         "purpose": e.strNa,
-                        "notes": e.strNa,
+                        # "notes": e.strNa,
                         "start": e.timestampWithSeconds,
                         "stop": e.timestampWithSeconds,
                         "length": e.int,
-                        "liste_segments": e.strNa,
-                        "id_origine": e.int
+                        "liste_segments_jsonb": {
+                            "type": "object",
+                            "properties": {
+                                "id": e.int,
+                                "source": e.strNa
+                            }
+                        },
+                        "speeds": e.int,
+                        "accelerations": e.float,
+                        "n_points": e.int,
+                        "n_seconds": e.int,
+                        "mean_speed": e.float,
+                        "wiggliness": e.float
                     }
                 },
                 "geometry": {

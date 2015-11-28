@@ -56,7 +56,7 @@ def exportFileToES(index, docType, fileName, date):
     countAddedDocs = 0
     i = 0
 
-    data = json.loads(open("input/trip5000.json").readline())
+    data = json.loads(open(fileName).readline())
     # ['type', 'geometry', 'properties']
     # geometry: {'type', 'coordinates'}
     # properties: ['n_coord', 'length', 'purpose', 'start', 'id_origine',
@@ -95,7 +95,7 @@ def exportFileToES(index, docType, fileName, date):
 
         toolbox.progressBar(i, 5000)
 
-        if i >= 50000:
+        if i >= 100000:
             # On veut que 500 tapIn mais ... on ne veut pas couper les tap in
             # d'une carte !
             break
@@ -110,9 +110,9 @@ def exportFileToES(index, docType, fileName, date):
     print(counts["countAddedDocs"], "/", i + 1, "transactions envoyées à ElasticSearch en",
           toolbox.tempsCalulString(tStart), "pour", fileName)
 
-print("export defivelomtl > trip5000.json")
+print("export defivelomtl > trip5000-enriched.json")
 exportFileToES(
-    "defivelomtl", "trip5000MonReseauVelo", "input/trip5000.json", False)
+    "defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
 
 # print("export defivelomtl > mrvtripsnapliv03")
 # exportFileToES("defivelomtl", "mrvtripsnapliv03", "input/mrvtripsnapliv03.json", False)
