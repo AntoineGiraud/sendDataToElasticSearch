@@ -1,6 +1,7 @@
 from lib.mappingJson import mappingJson
 import lib.toolbox as toolbox
 import time
+import os
 import json
 from elasticsearch import Elasticsearch
 
@@ -104,7 +105,7 @@ def exportFileToES(index, docType, fileName, date):
                     continue
         toolbox.progressBar(i, 150000)
 
-        if i >= 200000:
+        if i >= 2000000:
             break  # On veut que 500 tapIn mais ... on ne veut pas couper les tap in d'une carte !
 
         batchToElasticSearch(ligne, labels, batch, counts, es, index, docType, False)
@@ -130,7 +131,9 @@ for line in open("input/BIXI_Stations_20151126.csv", encoding="utf8"):
 print("export defivelomtl > bixi_stations")
 exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")
 
-print("export defivelomtl > bixi_OD")
-exportFileToES("defivelomtl", "bixi_OD", "input/BIXI_avril 2015_demo.csv", False)
+for file in os.listdir("input/bixi_OD"):
+    print("export defivelomtl > bixi_OD > ", file)
+    exportFileToES("defivelomtl", "bixi_OD", "input/bixi_OD/"+file, False)
+
 print("export defivelomtl > arceaux_a_velos")
 exportFileToES("defivelomtl", "arceaux_a_velos", "input/arceaux_a_velos.csv", "2013-10-17")
