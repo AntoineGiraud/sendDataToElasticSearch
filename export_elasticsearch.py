@@ -86,24 +86,27 @@ def exportFileToES(index, docType, fileName, date):
                 ligne.append(ligne[1]+"-"+ligne[4])
                 ligne.append(ligne[0])
                 ligne.append(ligne[0][-5:-3])
-                tempsTrajet = ligne[8].split("m")
-                tempsTrajet = tempsTrajet[0].split("h")
-                if len(tempsTrajet) == 2:
-                    tempsTrajet = int(tempsTrajet[0])*60 + int(tempsTrajet[1])
-                else:
-                    tempsTrajet = int(tempsTrajet[0])
+                try:
+                    tempsTrajet = ligne[8].split("m")
+                    tempsTrajet = tempsTrajet[0].split("h")
+                    if len(tempsTrajet) == 2:
+                        tempsTrajet = int(tempsTrajet[0])*60 + int(tempsTrajet[1])
+                    else:
+                        tempsTrajet = int(tempsTrajet[0])
+                except Exception:
+                    print("buug", ligne[8])
                 ligne.append(tempsTrajet)
                 try:
                     ligne.append(bixi_stops[ligne[1]])
                 except Exception:
-                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[1], "inexistante")
+                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[1], "inexistante", "ligne:", ligne)
                     continue
                 try:
                     ligne.append(bixi_stops[ligne[4]])
                 except Exception:
-                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[4], "inexistante")
+                    print("OD", ligne[1], "->", ligne[4], "éliminée, station", ligne[4], "inexistante", "ligne:", ligne)
                     continue
-        toolbox.progressBar(i, 150000)
+        toolbox.progressBar(i, 700000)
 
         if i >= 2000000:
             break  # On veut que 500 tapIn mais ... on ne veut pas couper les tap in d'une carte !

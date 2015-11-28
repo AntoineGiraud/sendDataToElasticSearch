@@ -107,31 +107,31 @@ class mappingJson:
                 "coordsLngLat": e.location,
                 "date": e.date
             }},
-            "mrvtripsnapliv03": {"_all": e._all, "properties": {
-                "type": e.strNa,
-                "date": e.timestampWithSeconds,
-                "hour": e.int,
-                "properties": {
-                    "type": "object",
-                    "properties": {
-                      "id": e.int,
-                      "purpose": e.strNa,
-                      "notes": e.strNa,
-                      "start": e.timestampWithSeconds,
-                      "stop": e.timestampWithSeconds,
-                      "length": e.int,
-                      "id_origine": e.int
-                    }
-                },
-                "geometry": {
-                    "type": "object",
-                    "properties": {
-                      "type": e.strNa,
-                      "coordinates": e.location
-                    }
-                }
-            }},
-            "mrvtripcleanliv03": {"_all": e._all, "properties": {
+            # "mrvtripsnapliv03": {"_all": e._all, "properties": {
+            #     "type": e.strNa,
+            #     "date": e.timestampWithSeconds,
+            #     "hour": e.int,
+            #     "properties": {
+            #         "type": "object",
+            #         "properties": {
+            #           "id": e.int,
+            #           "purpose": e.strNa,
+            #           "notes": e.strNa,
+            #           "start": e.timestampWithSeconds,
+            #           "stop": e.timestampWithSeconds,
+            #           "length": e.int,
+            #           "id_origine": e.int
+            #         }
+            #     },
+            #     "geometry": {
+            #         "type": "object",
+            #         "properties": {
+            #           "type": e.strNa,
+            #           "coordinates": e.location
+            #         }
+            #     }
+            # }},
+            "trip5000MonReseauVelo": {"_all": e._all, "properties": {
                 "type": e.strNa,
                 "date": e.timestampWithSeconds,
                 "hour": e.int,
