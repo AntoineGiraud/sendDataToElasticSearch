@@ -15,6 +15,8 @@ print("vidage index:", 'defivelomtl', '>', 'bixi_OD', Mapping.emptyIndexType('de
 print("indexage mapping", 'defivelomtl', '>', 'bixi_OD', Mapping.indexMapping('defivelomtl', 'bixi_OD'))
 print("vidage index:", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.emptyIndexType('defivelomtl', 'arceaux_a_velos'))
 print("indexage mapping", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.indexMapping('defivelomtl', 'arceaux_a_velos'))
+print("vidage index:", 'defivelomtl', '>', 'precipitations_jours', Mapping.emptyIndexType('defivelomtl', 'precipitations_jours'))
+print("indexage mapping", 'defivelomtl', '>', 'precipitations_jours', Mapping.indexMapping('defivelomtl', 'precipitations_jours'))
 # Mapping.resetAllMapping()
 # exit()
 
@@ -140,3 +142,6 @@ for file in os.listdir("input/bixi_OD"):
 
 print("export defivelomtl > arceaux_a_velos")
 exportFileToES("defivelomtl", "arceaux_a_velos", "input/arceaux_a_velos.csv", "2013-10-17")
+
+print("export defivelomtl > precipitations_jours")
+exportFileToES("defivelomtl", "precipitations_jours", "input/precipitations_jours.csv", False)

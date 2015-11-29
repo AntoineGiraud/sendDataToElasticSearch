@@ -43,6 +43,13 @@ class mappingJson:
 
     mappings = {
         "defivelomtl": {
+            "precipitations_jours": {"_all": e._all, "properties": {
+                "date": e.date,
+                "Précipitations": e.float,
+                "Température minimale": e.float,
+                "Température maximale": e.float,
+                "Température moyenne": e.float
+            }},
             "bixi_stations": {"_all": e._all, "properties": {
                 "id": e.int,
                 "name": e.strNa,
@@ -134,6 +141,8 @@ class mappingJson:
                         "n_points": e.int,
                         "n_seconds": e.int,
                         "mean_speed": e.float,
+                        "startPoint": e.location,
+                        "endPoint": e.location,
                         "wiggliness": e.float
                     }
                 },

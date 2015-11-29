@@ -8,8 +8,8 @@ es = Elasticsearch(['localhost:9200'])
 Mapping = mappingJson(es)
 
 print("----- Préparation ElasticSearch pour la réception des données ------")
-# print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
-# print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
+print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
+print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
 print("vidage index:", 'defivelomtl', '>', 'charges_bixi', Mapping.emptyIndexType('defivelomtl', 'charges_bixi'))
 print("indexage mapping", 'defivelomtl', '>', 'charges_bixi', Mapping.indexMapping('defivelomtl', 'charges_bixi'))
 # print("vidage index:", 'defivelomtl', '>', 'mrvtripcleanliv03', Mapping.emptyIndexType('defivelomtl', 'mrvtripcleanliv03'))
@@ -24,7 +24,7 @@ print("----- Lecture des TapIn et envoi à ElasticSearch ------")
 
 def batchToElasticSearch(feature, batch, counts, es, index, docType, forceSave):
     ''' On veut envoyer les voyages à ES, mais toujours par lot de 10 000 '''
-    step = 10000
+    step = 500
     batchIndex = {"index": {}}
 
     batch.extend([batchIndex, feature])
@@ -112,8 +112,8 @@ def exportFileToES(index, docType, fileName, date):
     print(counts["countAddedDocs"], "/", i + 1, "transactions envoyées à ElasticSearch en",
           toolbox.tempsCalulString(tStart), "pour", fileName)
 
-# print("export defivelomtl > trip5000-enriched.json")
-# exportFileToES("defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
+print("export defivelomtl > trip5000-enriched.json")
+exportFileToES("defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
 
 print("export defivelomtl > charges_bixi")
 exportFileToES("defivelomtl", "charges_bixi", "input/charges_bixi.json", "2015-11-28")
