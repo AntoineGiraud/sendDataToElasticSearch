@@ -9,14 +9,16 @@ es = Elasticsearch(['localhost:9200'])
 Mapping = mappingJson(es)
 
 print("----- Préparation ElasticSearch pour la réception des données ------")
-print("vidage index:", 'defivelomtl', '>', 'bixi_stations', Mapping.emptyIndexType('defivelomtl', 'bixi_stations'))
-print("indexage mapping", 'defivelomtl', '>', 'bixi_stations', Mapping.indexMapping('defivelomtl', 'bixi_stations'))
-print("vidage index:", 'defivelomtl', '>', 'bixi_OD', Mapping.emptyIndexType('defivelomtl', 'bixi_OD'))
-print("indexage mapping", 'defivelomtl', '>', 'bixi_OD', Mapping.indexMapping('defivelomtl', 'bixi_OD'))
-print("vidage index:", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.emptyIndexType('defivelomtl', 'arceaux_a_velos'))
-print("indexage mapping", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.indexMapping('defivelomtl', 'arceaux_a_velos'))
-print("vidage index:", 'defivelomtl', '>', 'precipitations_jours', Mapping.emptyIndexType('defivelomtl', 'precipitations_jours'))
-print("indexage mapping", 'defivelomtl', '>', 'precipitations_jours', Mapping.indexMapping('defivelomtl', 'precipitations_jours'))
+# print("vidage index:", 'defivelomtl', '>', 'bixi_stations', Mapping.emptyIndexType('defivelomtl', 'bixi_stations'))
+# print("indexage mapping", 'defivelomtl', '>', 'bixi_stations', Mapping.indexMapping('defivelomtl', 'bixi_stations'))
+# print("vidage index:", 'defivelomtl', '>', 'bixi_OD', Mapping.emptyIndexType('defivelomtl', 'bixi_OD'))
+# print("indexage mapping", 'defivelomtl', '>', 'bixi_OD', Mapping.indexMapping('defivelomtl', 'bixi_OD'))
+# print("vidage index:", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.emptyIndexType('defivelomtl', 'arceaux_a_velos'))
+# print("indexage mapping", 'defivelomtl', '>', 'arceaux_a_velos', Mapping.indexMapping('defivelomtl', 'arceaux_a_velos'))
+# print("vidage index:", 'defivelomtl', '>', 'precipitations_jours', Mapping.emptyIndexType('defivelomtl', 'precipitations_jours'))
+# print("indexage mapping", 'defivelomtl', '>', 'precipitations_jours', Mapping.indexMapping('defivelomtl', 'precipitations_jours'))
+print("vidage index:", 'defivelomtl', '>', 'polluants', Mapping.emptyIndexType('defivelomtl', 'polluants'))
+print("indexage mapping", 'defivelomtl', '>', 'polluants', Mapping.indexMapping('defivelomtl', 'polluants'))
 # Mapping.resetAllMapping()
 # exit()
 
@@ -127,21 +129,24 @@ i = -1
 for line in open("input/BIXI_Stations_20151126.csv", encoding="utf8"):
     if i < 0:
         i += 1
-        print("skip !")
+        # print("skip !")
         continue
     ligne = line.replace("\n", "").split(";")
     # terminalName;id;name;lat;long;coordsLngLat;installed;locked;temporary;public;nbBikes;nbEmptyDocks
     bixi_stops[ligne[0]] = ligne[5]
 
-print("export defivelomtl > bixi_stations")
-exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")
+# print("export defivelomtl > bixi_stations")
+# exportFileToES("defivelomtl", "bixi_stations", "input/BIXI_Stations_20151126.csv", "2015-11-26")
 
-for file in os.listdir("input/bixi_OD"):
-    print("export defivelomtl > bixi_OD > ", file)
-    exportFileToES("defivelomtl", "bixi_OD", "input/bixi_OD/"+file, False)
+# for file in os.listdir("input/bixi_OD"):
+#     print("export defivelomtl > bixi_OD > ", file)
+#     exportFileToES("defivelomtl", "bixi_OD", "input/bixi_OD/"+file, False)
 
-print("export defivelomtl > arceaux_a_velos")
-exportFileToES("defivelomtl", "arceaux_a_velos", "input/arceaux_a_velos.csv", "2013-10-17")
+# print("export defivelomtl > arceaux_a_velos")
+# exportFileToES("defivelomtl", "arceaux_a_velos", "input/arceaux_a_velos.csv", "2013-10-17")
 
-print("export defivelomtl > precipitations_jours")
-exportFileToES("defivelomtl", "precipitations_jours", "input/precipitations_jours.csv", False)
+# print("export defivelomtl > precipitations_jours")
+# exportFileToES("defivelomtl", "precipitations_jours", "input/precipitations_jours.csv", False)
+
+print("export defivelomtl > polluants")
+exportFileToES("defivelomtl", "polluants", "input/polluants.csv", False)

@@ -8,14 +8,12 @@ es = Elasticsearch(['localhost:9200'])
 Mapping = mappingJson(es)
 
 print("----- Préparation ElasticSearch pour la réception des données ------")
-print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
-print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
-print("vidage index:", 'defivelomtl', '>', 'charges_bixi', Mapping.emptyIndexType('defivelomtl', 'charges_bixi'))
-print("indexage mapping", 'defivelomtl', '>', 'charges_bixi', Mapping.indexMapping('defivelomtl', 'charges_bixi'))
-# print("vidage index:", 'defivelomtl', '>', 'mrvtripcleanliv03', Mapping.emptyIndexType('defivelomtl', 'mrvtripcleanliv03'))
-# print("indexage mapping", 'defivelomtl', '>', 'mrvtripcleanliv03', Mapping.indexMapping('defivelomtl', 'mrvtripcleanliv03'))
-# print("vidage index:", 'defivelomtl', '>', 'mrvtripsnapliv03', Mapping.emptyIndexType('defivelomtl', 'mrvtripsnapliv03'))
-# print("indexage mapping", 'defivelomtl', '>', 'mrvtripsnapliv03', Mapping.indexMapping('defivelomtl', 'mrvtripsnapliv03'))
+# print("vidage index:", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.emptyIndexType('defivelomtl', 'trip5000MonReseauVelo'))
+# print("indexage mapping", 'defivelomtl', '>', 'trip5000MonReseauVelo', Mapping.indexMapping('defivelomtl', 'trip5000MonReseauVelo'))
+# print("vidage index:", 'defivelomtl', '>', 'charges_bixi', Mapping.emptyIndexType('defivelomtl', 'charges_bixi'))
+# print("indexage mapping", 'defivelomtl', '>', 'charges_bixi', Mapping.indexMapping('defivelomtl', 'charges_bixi'))
+print("vidage index:", 'defivelomtl', '>', 'chemins_plus_courts_od_bixi', Mapping.emptyIndexType('defivelomtl', 'chemins_plus_courts_od_bixi'))
+print("indexage mapping", 'defivelomtl', '>', 'chemins_plus_courts_od_bixi', Mapping.indexMapping('defivelomtl', 'chemins_plus_courts_od_bixi'))
 # Mapping.resetAllMapping()
 # exit()
 
@@ -112,8 +110,11 @@ def exportFileToES(index, docType, fileName, date):
     print(counts["countAddedDocs"], "/", i + 1, "transactions envoyées à ElasticSearch en",
           toolbox.tempsCalulString(tStart), "pour", fileName)
 
-print("export defivelomtl > trip5000-enriched.json")
-exportFileToES("defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
+# print("export defivelomtl > trip5000-enriched.json")
+# exportFileToES("defivelomtl", "trip5000MonReseauVelo", "input/trip5000-enriched.json", False)
 
-print("export defivelomtl > charges_bixi")
-exportFileToES("defivelomtl", "charges_bixi", "input/charges_bixi.json", "2015-11-28")
+# print("export defivelomtl > charges_bixi")
+# exportFileToES("defivelomtl", "charges_bixi", "input/charges_bixi.json", "2015-11-28")
+
+print("export defivelomtl > chemins_plus_courts_od_bixi")
+exportFileToES("defivelomtl", "chemins_plus_courts_od_bixi", "input/chemins_plus_courts_od_bixi.json", "2015-11-28")

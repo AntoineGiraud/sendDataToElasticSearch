@@ -114,6 +114,22 @@ class mappingJson:
                 "coordsLngLat": e.location,
                 "date": e.date
             }},
+            "polluants": {"_all": e._all, "properties": {
+                "NO_POSTE": e.strNa,
+                "date": e.timestamp,
+                "CO": e.float,
+                "H2S": e.float,
+                "NO": e.float,
+                "NO2": e.float,
+                "PM2_5": e.float,
+                "PM2_5F": e.float,
+                "PM10": e.float,
+                "O3": e.float,
+                "SO2": e.float,
+                "lat": e.strNa,
+                "lng": e.strNa,
+                "coordsLngLat": e.location
+            }},
             "trip5000MonReseauVelo": {"_all": e._all, "properties": {
                 "type": e.strNa,
                 "date": e.timestampWithSeconds,
@@ -170,6 +186,23 @@ class mappingJson:
                         "charge": e.int
                     }
                 }
+            }},
+            "chemins_plus_courts_od_bixi": {"_all": e._all, "properties": {
+                "type": e.strNa,
+                "date": e.date,
+                "geometry": {
+                    "type": "object",
+                    "properties": {
+                        "type": e.strNa,
+                        "coordinates": e.location
+                    }
+                },
+                "properties": {
+                    "type": "object",
+                    "properties": {
+                        "nb_transactions": e.int
+                    }
+                }
             }}
         }
     }
@@ -180,9 +213,9 @@ class mappingJson:
     def parseValue(self, index, type, field, value):
         fieldCarac = self.mappings[index][type]["properties"][field]
         if fieldCarac == self.e.int or fieldCarac == self.e.intEager:
-            return int(value)
+            return int(value or 0)
         elif fieldCarac == self.e.float:
-            return float(value)
+            return float(value or 0)
         elif fieldCarac == self.e.location:
             return json.loads(value)
         else:
